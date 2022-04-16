@@ -2,5 +2,26 @@
   "dependencies": {
     "inquirer": "^8.2.2",
     "jest": "^27.5.1"
-  }
+  },
+  "name": "team-generator",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erockenmeyer/team-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erockenmeyer/team-generator/issues"
+  },
+  "homepage": "https://github.com/erockenmeyer/team-generator#readme"
 }
