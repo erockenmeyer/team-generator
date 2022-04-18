@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const generatePage = require('./src/page-template')
 let teamArray = [];
 
 const promptUser = () => {
@@ -51,6 +52,24 @@ const promptUser = () => {
     ])
 };
 
+// const newEmployeeCheck = () => {
+//     return inquirer.prompt([
+//         {
+//             type: 'confirm',
+//             name: 'newEmployee',
+//             message: 'Would you like to add another employee?',
+//             default: false
+//         }
+//     ])
+//         .then(check => {
+//             if (check.newEmployee) {
+//                 return promptUser;
+//             } else {
+//                 return teamArray;
+//             }
+//         })
+// }
+
 const getEmployeeInfo = (employee) => {
     if (employee.type === 'Engineer') {
         return inquirer.prompt([
@@ -66,11 +85,22 @@ const getEmployeeInfo = (employee) => {
                         return false;
                     }
                 }
+            },
+            {
+                type: 'confirm',
+                name: 'newEmployee',
+                message: 'Would you like to add another employee?',
+                default: false
             }
         ])
             .then(engineerInfo => {
                 employee.github = engineerInfo.github;
                 teamArray.push(employee);
+                if (engineerInfo.newEmployee) {
+                    return promptUser().then(getEmployeeInfo);
+                } else {
+                    return teamArray;
+                }
             });
     } else if (employee.type === 'Intern') {
         return inquirer.prompt([
@@ -86,11 +116,23 @@ const getEmployeeInfo = (employee) => {
                         return false;
                     }
                 }
+            },
+            {
+                type: 'confirm',
+                name: 'newEmployee',
+                message: 'Would you like to add another employee?',
+                default: false
             }
         ])
             .then(internInfo => {
                 employee.school = internInfo.school;
                 teamArray.push(employee);
+                if (internInfo.newEmployee) {
+                    return promptUser().then(getEmployeeInfo);
+                }
+                else {
+                    return teamArray;
+                }
             });
     } else {
         return inquirer.prompt([
@@ -106,33 +148,28 @@ const getEmployeeInfo = (employee) => {
                         return false;
                     }
                 }
+            },
+            {
+                type: 'confirm',
+                name: 'newEmployee',
+                message: 'Would you like to add another employee?',
+                default: false
             }
         ])
             .then(managerInfo => {
                 employee.officeNumber = managerInfo.officeNumber;
                 teamArray.push(employee);
+                if (managerInfo.newEmployee) {
+                    return promptUser().then(getEmployeeInfo);
+                } else {
+                    return teamArray;
+                }
             });
     }
 };
 
-const newEmployeeCheck = () => {
-    return inquirer.prompt([
-        {
-            type: 'confirm',
-            name: 'newEmployee',
-            message: 'Would you like to add another employee?',
-            default: false
-        }
-    ])
-        .then(check => {
-            if (check.newEmployee) {
-                return promptUser;
-            } else {
-                return teamArray;
-            }
-        })
-}
-
 promptUser()
     .then(getEmployeeInfo)
-    .then(newEmployeeCheck);
+    .then(array => {
+        return generatePage(array);
+    })
