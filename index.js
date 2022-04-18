@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const generatePage = require('./src/page-template')
+const { writeFile, copyFile } = require('./utils/generate-site');
 let teamArray = [];
 
 const promptUser = () => {
@@ -51,24 +52,6 @@ const promptUser = () => {
         }
     ])
 };
-
-// const newEmployeeCheck = () => {
-//     return inquirer.prompt([
-//         {
-//             type: 'confirm',
-//             name: 'newEmployee',
-//             message: 'Would you like to add another employee?',
-//             default: false
-//         }
-//     ])
-//         .then(check => {
-//             if (check.newEmployee) {
-//                 return promptUser;
-//             } else {
-//                 return teamArray;
-//             }
-//         })
-// }
 
 const getEmployeeInfo = (employee) => {
     if (employee.type === 'Engineer') {
@@ -172,4 +155,17 @@ promptUser()
     .then(getEmployeeInfo)
     .then(array => {
         return generatePage(array);
+    })
+    .then(pageHTML => {
+        return writeFile(pageHTML);
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+    })
+    .then(copyFileResponse => {
+        console.log(copyFileResponse);
+    })
+    .catch(err => {
+        console.log(err);
     })
